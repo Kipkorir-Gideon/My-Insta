@@ -15,3 +15,7 @@ class Image(models.Model):
 class Profile(models.Model):
     photo = CloudinaryField('photo')
     bio = models.CharField(max_length=200)
+
+
+class Comments(models.Model):
+    comment = models.CharField(max_length=300)
