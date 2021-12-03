@@ -10,3 +10,8 @@ class Image(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     likes = models.ForeignKey(Likes, on_delete=models.CASCADE)
     comments = models.ForeignKey(Comments, on_delete=models.CASCADE)
+
+
+class Profile(models.Model):
+    photo = CloudinaryField('photo')
+    bio = models.CharField(max_length=200)
