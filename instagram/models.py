@@ -20,10 +20,16 @@ class Profile(models.Model):
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    #Creates a profile when a user is created
     @receiver(post_save, sender = User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
+
+    #Saves the User's profile information
+    @receiver(post_save, sender = User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
 
 class Comments(models.Model):
