@@ -37,4 +37,5 @@ class Comments(models.Model):
 
 
 class Likes(models.Model):
-    like = 
+    image =models.ForeignKey(Image, on_delete = models.CASCADE,related_name='photolikes')
+    liker=models.ForeignKey(User,on_delete = models.CASCADE,related_name='userlikes')
