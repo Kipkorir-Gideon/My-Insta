@@ -4,6 +4,10 @@ from django.contrib.auth import login
 from django.contrib import messages
 
 # Create your views here.
+def homepage(request):
+	return render(request=request, template_name='home.html')
+
+
 def register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
