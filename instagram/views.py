@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import NewUserForm
 from django.contrib.auth import login
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
 
 # Create your views here.
@@ -10,7 +10,7 @@ def homepage(request):
 	return render(request=request, template_name='home.html')
 
 
-def register(request):
+def user_register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -40,3 +40,9 @@ def user_login(request):
             messages.error(request,'Invalid username or password.')
     form = AuthenticationForm()
     return render(request, 'login.html', context={'login_form':form})
+
+
+def user_logout(request):
+    logout(request)
+    messages.info(request,'You have successfully logged out.')
+    return redirect('user_login')
