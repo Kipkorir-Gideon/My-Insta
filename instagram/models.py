@@ -12,6 +12,7 @@ class Profile(models.Model):
     photo = CloudinaryField('photo')
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    posts = models.ManyToManyField(Post, on_delete=models.CASCADE)
     
 
     #Creates a profile when a user is created

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
+from .forms import NewUserForm, UserForm, ProfileForm
 
 # Create your views here.
 def homepage(request):
@@ -48,3 +48,9 @@ def user_logout(request):
     logout(request)
     messages.info(request,'You have successfully logged out.')
     return redirect("login")
+
+
+def user_page(request):
+    user_form = UserForm(instance=request.user)
+    profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'user_page.html', {'user':request.user, 'user_form':user_form, 'profile_form':profile_form})
