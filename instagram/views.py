@@ -17,10 +17,10 @@ def user_register(request):
             user = form.save()
             login(request, user)
             messages.success(request,'Registration successful.')
-            return redirect('homepage')  
+            return redirect("login")  
         messages.error(request,'Registration failed.')
     form = NewUserForm()
-    return render(request, 'registration/registration.html', context={'register_form': form})
+    return render(request, "registration/registration.html", {'register_form': form})
 
 
 def user_login(request):
@@ -33,13 +33,13 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f'You are now logged in as {username}.')
-                return redirect('homepage')
+                return redirect("homePage")
             else:
                 messages.error(request, 'Invalid username or password.')
         else:
             messages.error(request,'Invalid username or password.')
     form = AuthenticationForm()
-    return render(request, 'login.html', context={'login_form':form})
+    return render(request, template_name='registration/login.html', context={'login_form':form})
 
 
 def user_logout(request):

@@ -12,6 +12,7 @@ class Profile(models.Model):
     photo = CloudinaryField('photo')
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
 
     #Creates a profile when a user is created
     @receiver(post_save, sender = User)
@@ -29,6 +30,9 @@ class Comments(models.Model):
     comment = models.CharField(max_length=300)
 
 
+class Likes(models.Model):
+    liker=models.ForeignKey(User,on_delete = models.CASCADE,related_name='userlikes')
+
 
 class Image(models.Model):
     image = CloudinaryField('image')
@@ -37,8 +41,3 @@ class Image(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     likes = models.ForeignKey(Likes, on_delete=models.CASCADE)
     comments = models.ForeignKey(Comments, on_delete=models.CASCADE)
-
-
-class Likes(models.Model):
-    image =models.ForeignKey(Image, on_delete = models.CASCADE,related_name='photolikes')
-    liker=models.ForeignKey(User,on_delete = models.CASCADE,related_name='userlikes')
