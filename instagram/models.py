@@ -12,7 +12,6 @@ class Profile(models.Model):
     photo = CloudinaryField('photo')
     bio = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    posts = models.ManyToManyField(Post, on_delete=models.CASCADE)
     
 
     #Creates a profile when a user is created
@@ -27,18 +26,18 @@ class Profile(models.Model):
         instance.profile.save()
 
 
-class Comments(models.Model):
-    comment = models.CharField(max_length=300)
-
-
-class Likes(models.Model):
-    liker=models.ForeignKey(User,on_delete = models.CASCADE,related_name='userlikes')
-
 
 class Image(models.Model):
     image = CloudinaryField('image')
     name = models.CharField(max_length=30)
-    caption = models.CharField(max_length=100)
-    profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    likes = models.ForeignKey(Likes, on_delete=models.CASCADE)
-    comments = models.ForeignKey(Comments, on_delete=models.CASCADE)
+    caption = models.TextField()
+    posted_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    likes = models.IntegerField(default=0)
+
+
+
+class Comments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='comments')
+    photo = models.ForeignKey(Image, on_delete=models.CASCADE,related_name='comments', default=None)
+    comment = models.TextField()
