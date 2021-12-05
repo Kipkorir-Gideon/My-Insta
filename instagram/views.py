@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .forms import NewUserForm
-from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
@@ -14,7 +13,10 @@ def user_register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request,'Registration successful.')
             return redirect("login")  
@@ -45,4 +47,4 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     messages.info(request,'You have successfully logged out.')
-    return redirect('user_login')
+    return redirect("login")
