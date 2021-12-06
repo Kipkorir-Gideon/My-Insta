@@ -67,3 +67,11 @@ class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='comments')
     photo = models.ForeignKey(Image, on_delete=models.CASCADE,related_name='comments', default=None)
     comment = models.TextField()
+
+    @classmethod
+    def display_by_id(cls, image_id):
+        comments = cls.objects.filter(image=image_id)
+        return comments
+
+    def __str__(self):
+        return self.comment
