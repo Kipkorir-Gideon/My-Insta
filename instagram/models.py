@@ -33,7 +33,33 @@ class Image(models.Model):
     caption = models.TextField()
     posted_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    likes = models.IntegerField(default=0)
+
+    def save_image(self):
+        self.save()
+
+    def delete_image(self):
+        self.delete()
+
+    @classmethod
+    def display_images(cls):
+        images = cls.objects.all()
+        return images
+
+    @classmethod
+    def search_images(cls, search_term):
+        images = cls.objects.filter(name__icontains=search_term.all())
+        return images
+
+    @property
+    def all_comments(self):
+        return self.comments.all()
+
+    @property
+    def all_likes(self):
+        return self.likes.count()
+
+    def __str__(self):
+        return self.name
 
 
 
