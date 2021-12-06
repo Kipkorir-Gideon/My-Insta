@@ -91,3 +91,13 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.comment
+
+
+
+class Like(models.Model):
+    like = models.BooleanField()
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='imagelikes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userlikes')
+
+    def __str__(self):
+        return self.user
