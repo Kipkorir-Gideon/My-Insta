@@ -100,3 +100,15 @@ def user_page(request):
     user_form = UserForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form,'user_profile':user_profile})
+
+
+@login_required
+def search(request):
+  if 'search_user' in request.GET and request.GET["search_user"]:
+    name = request.GET.get('search_user')
+    the_users = Profile.search_profiles(name)
+    images = Image.search_images(name)
+    print(the_users)
+    return render(request, 'main/search.html', {"users": the_users, "images": images})
+  else:
+    return render(request, 'main/search.html')
