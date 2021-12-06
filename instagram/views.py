@@ -24,18 +24,6 @@ def homepage(request):
     return render(request, 'home.html', {'posts': posts,'comment_form': comment_form})
 
 
-
-
-def post(request):
-    user = request.user
-    comments = Comments.objects.all()
-    user_profile = Profile.objects.get(user=user)
-    posts = Image.objects.all()
-    profiles = Profile.objects.all()
-    context = {'comments':comments, 'profiles':profiles,'post':posts,'user_profile':user_profile}
-    return render(request, 'home.html', context)
-
-
 def user_register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
@@ -50,6 +38,22 @@ def user_register(request):
         messages.error(request,'Registration failed.')
     form = NewUserForm()
     return render(request, "registration/registration.html", {'register_form': form})
+
+
+
+@login_required
+def commenting(request, image_id):
+    comment_form = CommentForm()
+    image = Image.objects.filter(pk=image_id).first()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if not comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.image = image 
+            comment.save()
+    return redirect("homePage")  
+
 
 
 def user_login(request):
@@ -90,6 +94,9 @@ def user_page(request):
         else:
             messages.error(request,('Unable to complete request'))
         return redirect ("userpage")
+    user = request.user
+    user_profile = Profile.objects.get(user=user)
+    posts = Image.objects.all()
     user_form = UserForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'user_page.html', {'user':request.user, 'user_form':user_form, 'profile_form':profile_form})
+    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form,'user_profile':user_profile})
