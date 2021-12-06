@@ -4,11 +4,18 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
 from .forms import NewUserForm, UserForm, ProfileForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from .models import *
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def homepage(request):
-	return render(request=request, template_name='home.html')
+    user = request.user
+    comments = Comments.objects.all()
+    user_profile = Profile.objects.get(user=user)
+    post = Image.objects.all()
+    profiles = Profile.objects.all()
+    context = {'comments':comments, 'profiles':profiles,'post':post,'user_profile':user_profile}
+    return render(request, 'home.html', context)
 
 
 def user_register(request):
