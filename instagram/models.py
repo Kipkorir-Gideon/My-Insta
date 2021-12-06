@@ -25,6 +25,22 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
+    @property
+    def all_followers(self):
+        return self.followers.count()
+
+    @property
+    def followings(self):
+        return self.followers.all()
+
+    @classmethod
+    def search_profiles(cls, search_term):
+        profiles = cls.objects.filter(user__username__icontains=search_term).all()
+        return profiles
+
+    def __str__(self):
+        return self.user
+
 
 
 class Image(models.Model):
