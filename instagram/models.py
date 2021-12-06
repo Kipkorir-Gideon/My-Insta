@@ -94,7 +94,7 @@ class Comments(models.Model):
 
 
 
-class Like(models.Model):
+class Likes(models.Model):
     like = models.BooleanField()
     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='imagelikes')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userlikes')
