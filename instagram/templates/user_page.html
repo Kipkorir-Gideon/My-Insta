@@ -37,9 +37,9 @@
                   {% for post in user.profile.posts.all %}
                     <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
                         <div class="h-100">
-                            <img src="{{ post.post_image.url }}" class="card-img-top" alt="{{ post.post_name }}" style="width: auto; height: 225px; object-fit: scale-down;">
+                            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.name }}" style="width: auto; height: 225px; object-fit: scale-down;">
                             <div class="card-body">
-                                  <h5 class="card-title">{{ post.post_name }}</h5>
+                                  <h5 class="card-title">{{ post.name }}</h5>
                             </div>
                           </div>
                     </div>

@@ -9,12 +9,30 @@ from .models import *
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def homepage(request):
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST, instance=request.user)
+        if comment_form.is_valid():
+            comment_form.save()
+            messages.success(request,('Comment added successfully.'))
+        post_id = request.POST.get('post_id')
+        post = Image.objects.get(id=post_id)
+        request.user.profile.posts.add(post)
+        messages.success(request,(f'{post} added to your posts.'))
+        return redirect('homePage')
+    posts = Image.objects.all()
+    comment_form = CommentForm(instance=request.user)
+    return render(request, 'home.html', {'posts': posts,'comment_form': comment_form})
+
+
+
+
+def post(request):
     user = request.user
     comments = Comments.objects.all()
     user_profile = Profile.objects.get(user=user)
-    post = Image.objects.all()
+    posts = Image.objects.all()
     profiles = Profile.objects.all()
-    context = {'comments':comments, 'profiles':profiles,'post':post,'user_profile':user_profile}
+    context = {'comments':comments, 'profiles':profiles,'post':posts,'user_profile':user_profile}
     return render(request, 'home.html', context)
 
 

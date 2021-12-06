@@ -1,3 +1,39 @@
-{%extends 'base.html'%}
-{% load static %}
-{% load bootstrap4 %}
+{%extends 'base.html'%} 
+{% load bootstrap4 %} 
+{% block content %} 
+ <!--Posts-->
+ <div class="container py-5">
+    <h1 class="font-weight-bold">Posts</h1>
+    <hr>
+    <br>
+    <div class="row">
+         {% for post in posts.all %}          
+            <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+                <div class="card h-100" style="border:none">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.name }}" style="width: auto; height: 200px; object-fit: scale-down;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.name }}</h5>
+                        <p class="card-text text-muted" style="font-size:12px">{{ post.likes }}</p>
+                        <p class="card-text">{{ post.caption }}</p>
+                        <div class="row">
+                            <div class="col-3 text-center">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {% bootstrap_form comment_form %}
+                                    <input type="hidden" value="{{post.pk}}" name="post_pk">
+                                </form>
+                            </div>
+                            <div class="col-4 text-center">
+                                
+                            </div>
+                            <div class="col-5 text-center">
+                                <a href="{{ p.affiliate_url }}" class="btn btn-warning">Comment</a>                              
+                            </div>
+                        </div> 
+                    </div>
+                </div> 
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
