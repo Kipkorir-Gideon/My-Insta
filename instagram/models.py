@@ -39,7 +39,7 @@ class Profile(models.Model):
         return profiles
 
     def __str__(self):
-        return self.user
+        return self.bio
 
 
 

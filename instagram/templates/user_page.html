@@ -13,6 +13,11 @@
                 <h4 class="card-title font-weight-bold text-center">{{ user.username|title }}</h4>
                   <hr>
                 <div class="card-text">
+                    {% if user.profile.photo.url %}
+                    <img src="{{user.profile.photo.url}}" alt="{{user.photo.url}}" width="200" height="200"class="rounded-circle account-img">
+                    {% else %}
+                    <i style="font-size:100px;color:#4888BE" class="fa fa-user" aria-hidden="true"></i>
+                    {% endif %}
                     <p class="text-muted mb-0" style="font-size: 12px">Username:</p>
                     <p>{{ user.username }}</p>
                     <p class="text-muted mb-0" style="font-size: 12px">Email:</p>
@@ -34,16 +39,22 @@
             </div>
               <br>
               <div class="row">
-                  {% for post in user.profile.posts.all %}
+                  {% if posts %}
+                  {% for post in posts %}
                     <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
                         <div class="h-100">
-                            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.name }}" style="width: auto; height: 225px; object-fit: scale-down;">
+                            {% if user.profile.photo.url %}
+                            <img src="{{ post.user.profile.photo.url }}" class="card-img-top" alt="{{ post.profile.name }}" style="width: auto; height: 225px; object-fit: scale-down;">
+                            {% else %}
+                            <i style="font-size:100px;color:#4888BE" class="fa fa-user" aria-hidden="true"></i>
+                            {% endif %}
                             <div class="card-body">
-                                  <h5 class="card-title">{{ post.name }}</h5>
+                                  <h5 class="card-title">{{ post.user.username }}</h5>
                             </div>
                           </div>
                     </div>
                 {% endfor %}
+                {%endif %}
             </div>
         </div>
     </div>

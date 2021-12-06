@@ -10,7 +10,11 @@ from .models import *
 @login_required(login_url='/accounts/login/')
 def homepage(request):
     if request.method == 'POST':
+        post_form = PostForm(request.POST, instance=request.user)
         comment_form = CommentForm(request.POST, instance=request.user)
+        if post_form.is_valid():
+            post_form.save()
+            messages.success(request,('Your post has been added successfully.'))
         if comment_form.is_valid():
             comment_form.save()
             messages.success(request,('Comment added successfully.'))
@@ -20,8 +24,9 @@ def homepage(request):
         messages.success(request,(f'{post} added to your posts.'))
         return redirect('homePage')
     posts = Image.objects.all()
+    post_form = PostForm(instance=request.user)
     comment_form = CommentForm(instance=request.user)
-    return render(request, 'home.html', {'posts': posts,'comment_form': comment_form})
+    return render(request, 'home.html', {'posts': posts, 'post_form': post_form, 'comment_form': comment_form})
 
 
 @login_required
@@ -112,11 +117,10 @@ def user_page(request):
             messages.error(request,('Unable to complete request'))
         return redirect ("userpage")
     user = request.user
-    user_profile = Profile.objects.get(user=user)
-    posts = Image.objects.all()
+    posts = Image.objects.filter(user_id=user.id).all()
     user_form = UserForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form,'user_profile':user_profile})
+    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form})
 
 
 @login_required
