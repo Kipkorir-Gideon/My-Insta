@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm 
-from .forms import NewUserForm, UserForm, ProfileForm, CommentForm
+from .forms import *
 from django.contrib.auth.decorators import login_required
 from .models import *
 
@@ -64,6 +64,12 @@ def commenting(request, image_id):
             comment.image = image 
             comment.save()
     return redirect("homePage")  
+
+
+@login_required
+def all_comments(request, image_id):
+    image = Image.objects.filter(pk=image_id).first()
+    return render(request,'comments.html',{'image':image})
 
 
 
