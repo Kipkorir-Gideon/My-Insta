@@ -24,6 +24,17 @@ def homepage(request):
     return render(request, 'home.html', {'posts': posts,'comment_form': comment_form})
 
 
+@login_required
+def posting(request):
+    if request.method == 'POST':
+        post_form = PostForm(request.POST,request.FILES)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
+            post.user = request.user
+            post.save()
+    return redirect('homePage')
+
+
 def user_register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
@@ -109,6 +120,6 @@ def search(request):
     the_users = Profile.search_profiles(name)
     images = Image.search_images(name)
     print(the_users)
-    return render(request, 'main/search.html', {"users": the_users, "images": images})
+    return render(request, 'search.html', {"users": the_users, "images": images})
   else:
-    return render(request, 'main/search.html')
+    return render(request, 'search.html')
