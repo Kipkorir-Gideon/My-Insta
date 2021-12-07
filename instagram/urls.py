@@ -8,9 +8,8 @@ from django.conf.urls import include
 
 urlpatterns=[
     path('',views.homepage, name='homePage'),
-    path('accounts/register/', views.user_register, name='register'),
+    # path('accounts/register/', views.user_register, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path("logout/", views.user_logout, name= "logout"),
     path("user", views.user_page, name = "userpage"),
     re_path(r'^comment/(?P<image_id>\d+)$',app_views.commenting,name='commenting'),
     re_path(r'^allcomments/(?P<image_id>\d+)$',app_views.all_comments,name='all_comments'),
