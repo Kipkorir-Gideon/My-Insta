@@ -1,44 +1,46 @@
-{%extends 'base.html'%} 
-{% load bootstrap4 %} 
-{% block content %} 
- <!--Posts-->
- <div class="container py-5">
+{%extends 'base.html'%}
+{% load bootstrap4 %}
+{% block content %}
+<!--Posts-->
+<div class="container-fluid">
 
     <div class="row">
-
-        <div>
-            <a href="{% url 'userpage' %}"><img src="{{user.profile.photo.url}}"
-                    class="rounded-circle border" alt="{{user.profile.name}}" width="80" height="80"></a>
+        <div class="col-md-3">
+            <div>
+                <a href="{% url 'userpage' %}"><img src="{{user.profile.photo.url}}" class="rounded-circle border"
+                        alt="{{user.profile.name}}" width="250" height="250"></a>
+            </div>
+            <div>
+                <a href="{% url 'userpage' %}">
+                    <h2 class="text-monospace ml-3 pt-2"><small><strong>{{user.username}}</strong></small></h2>
+                </a>
+            </div>
         </div>
-        <div>
-            <a href="{% url 'userpage' %}">
-                <h2 class="text-monospace ml-3 pt-2"><small><strong>{{user.username}}</strong></small></h2>
-            </a>
-        </div>
-    </div>
-
-    <h1 class="font-weight-bold">Posts</h1>
-    <hr>
-    <br>
-    
-
-        {% if posts %}
-         {% for post in posts.all %}          
-         <div>
-            <!-- displaying profile picture -->
-            <a href="{% url 'users_profile' post.user.id %}">
-                <img src="{{post.user.profile.photo.url}}" class="rounded-circle border"
-                    alt="{{post.user.profile.photo.url}}" width="80" height="80">
-                <p class="text-monospace ml-3 pt-2">
-                    <small><strong>{{post.user.username}}</strong></small>
-                </p>
-            </a>
-        </div>
-        <div>
-            <!-- To display image title -->
-            <p id="title" class="text-monospace ml-3"><small>{{post.name}}</small></p>
+        <div class="col-md-4">
             
-        </div>
+
+            <h1 class="font-weight-bold">Posts</h1>
+            <hr>
+            <br>
+
+
+            {% if posts %}
+            {% for post in posts.all %}
+            <div class=col-md-4>
+                <!-- displaying profile picture -->
+                <a href="{% url 'users_profile' post.user.id %}">
+                    <img src="{{post.user.profile.photo.url}}" class="rounded-circle border"
+                        alt="{{post.user.profile.photo.url}}" width="80" height="80">
+                    <p class="text-monospace ml-3 pt-2">
+                        <small><strong>{{post.user.username}}</strong></small>
+                    </p>
+                </a>
+            </div>
+            <div>
+                <!-- To display image title -->
+                <p id="title" class="text-monospace ml-3"><small>{{post.name}}</small></p>
+
+            </div>
 
             <!-- displaying images posted -->
             <div class="card-header" text-align="center">
@@ -56,11 +58,11 @@
 
                 <div>
                     <a href=" {% url 'likes' image_id=post.id %}">
-                      <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
+                        <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
                     <p><strong class="ml-3 photo_likes">{{post.all_likes}} </strong>
-                      <strong>Likes</strong>
+                        <strong>Likes</strong>
                     </p>
-                  </div>
+                </div>
 
                 <div>
                     <p class="text-muted text-monospace ml-3"><strong>{{post.name}}</strong> {{post.caption}}
@@ -76,23 +78,28 @@
                     <input type="submit" class="btn btn-success btn btn-lg" value="Comment">
                 </form>
 
-                 <!-- Displaying comments already posted -->
-                 {% if post.all_comments.count > 2 %}
-                 <div class="ml-1 ">
-                     <a href="{% url 'all_comments' image_id=post.id %}" class="text-muted">View all
-                         {{post.all_comments|length}} comments</a>
-                     
-                 </div>
-                 {% endif %}
+                <!-- Displaying comments already posted -->
+                {% if post.all_comments.count > 2 %}
+                <div class="ml-1 ">
+                    <a href="{% url 'all_comments' image_id=post.id %}" class="text-muted">View all
+                        {{post.all_comments|length}} comments</a>
 
-                 <!-- Displaying the previous comments -->
-                 {% for comment in post.all_comments|slice:"2" %}
-                 <p class="ml-3"><span class="font-weight-bold">{{comment.user.username}}</span>
-                     {{comment.comment}}</p>
-                 {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Displaying the previous comments -->
+                {% for comment in post.all_comments|slice:"2" %}
+                <p class="ml-3"><span class="font-weight-bold">{{comment.user.username}}</span>
+                    {{comment.comment}}</p>
+                {% endfor %}
             </div>
-        {% endfor %}
-        {%endif %}
+            {% endfor %}
+            {%endif %}
+        </div>
+
     </div>
+    <div class="col-md-3"></div>
+
+</div>
 </div>
 {% endblock %}
