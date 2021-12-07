@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+<div class="container">
+    <div class="row mb-4 pt-4">
+        <div class="col-sm-4">
+            <img src="{{user.profile.photo.url}}" alt="{{user.photo.url}}" width="200" height="200"
+                class="rounded-circle account-img">
+        </div>
+        <div class="col-sm-8">
+            <section>
+                <div class="row1">
+                    <h3 class="text-monospace">{{user.username}}</h3>
+                </div>
+
+                <div class="row2 mt-3">
+                    <p class="text-monospace">{{images|length}} posts</p>
+                    <p class="text-monospace ml-3">{{user.profile.all_followers}} followers</p>
+                    <p class="text-monospace ml-3">{{user.profile.all_following}} following</p>
+                </div>
+                <div class="row3 mt-3">
+                    <p class="text-monospace font-weight-bold">{{user.username}}</p>
+                    <p class="text-monospace">{{user.profile.bio}}</p>
+                </div>
+            </section>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-body">
+                                <p class="text-monospace">
+                                    <a href="{% url 'logout' %}" class="tooltip-test" title="Tooltip">Logout</a>
+                                </p>
+                                <a class="modaloption button" data-dismiss="modal">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

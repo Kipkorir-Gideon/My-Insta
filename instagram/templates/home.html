@@ -3,23 +3,42 @@
 {% block content %} 
  <!--Posts-->
  <div class="container py-5">
+
+    <div class="row">
+
+        <div>
+            <a href="{% url 'userpage' %}"><img src="{{user.profile.photo.url}}"
+                    class="rounded-circle border" alt="{{user.profile.name}}" width="80" height="80"></a>
+        </div>
+        <div>
+            <a href="{% url 'userpage' %}">
+                <h2 class="text-monospace ml-3 pt-2"><small><strong>{{user.username}}</strong></small></h2>
+            </a>
+        </div>
+    </div>
+
     <h1 class="font-weight-bold">Posts</h1>
     <hr>
     <br>
-    <div class="row">
+    
+
         {% if posts %}
          {% for post in posts.all %}          
-            <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
-                <div class="card h-100" style="border:none">
-                    <p class="text-monospace ml-3 pt-2"><small><strong>{{post.user.username}}</strong></small></p>
-                    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.name }}" style="width: auto; height: 200px; object-fit: scale-down;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ post.name }}</h5>
-                        <p class="card-text text-muted" style="font-size:12px">{{ post.all_likes }}</p>
-                        <p class="card-text">{{ post.caption }}</p>
-                    </div>
-                </div> 
-            </div>
+         <div>
+            <!-- displaying profile picture -->
+            <a href="{% url 'users_profile' post.user.id %}">
+                <img src="{{post.user.profile.photo.url}}" class="rounded-circle border"
+                    alt="{{post.user.profile.photo.url}}" width="80" height="80">
+                <p class="text-monospace ml-3 pt-2">
+                    <small><strong>{{post.user.username}}</strong></small>
+                </p>
+            </a>
+        </div>
+        <div>
+            <!-- To display image title -->
+            <p id="title" class="text-monospace ml-3"><small>{{post.name}}</small></p>
+            
+        </div>
 
             <!-- displaying images posted -->
             <div class="card-header" text-align="center">
@@ -58,7 +77,7 @@
                  <!-- Displaying comments already posted -->
                  {% if post.all_comments.count > 2 %}
                  <div class="ml-1 ">
-                     <a href="{% url 'allcomments' image_id=post.id %}" class="text-muted">View all
+                     <a href="{% url 'all_comments' image_id=post.id %}" class="text-muted">View all
                          {{post.all_comments|length}} comments</a>
                      
                  </div>

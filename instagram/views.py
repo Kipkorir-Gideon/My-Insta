@@ -143,6 +143,15 @@ def user_page(request):
 
 
 @login_required
+def users_profile(request, pk):
+  user = User.objects.get(pk=pk)
+  images = Image.objects.filter(user=user)
+  c_user = request.user
+
+  return render(request, 'users_profile.html', {"user": user, "images": images, "c_user": c_user})
+
+
+@login_required
 def search(request):
   if 'search_user' in request.GET and request.GET["search_user"]:
     name = request.GET.get('search_user')

@@ -32,7 +32,7 @@
                 {% for comment in image.comments %}
                 <div class="flex ">
                     <div>
-                        <a href="{% url 'profile' comment.user.id %}">
+                        <a href="{% url 'userpage' comment.user.id %}">
                             <img src="{{comment.user.profile.photo.url}}" class="rounded-circle border" alt="img"width="50" height="50">
                         </a>
                     </div>

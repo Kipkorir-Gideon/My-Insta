@@ -16,7 +16,7 @@
             {% for user in users %}
             <div class="flex">
                 <div>
-                    <a href="{% url 'profile' user.user.id  %}">
+                    <a href="{% url 'userpage' user.user.id  %}">
                         <img src="{{user.user.profile.photo.url}}" class="rounded-circle border" alt="img"
                             width="50" height="50">
                     </a>
