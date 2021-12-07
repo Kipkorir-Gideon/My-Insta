@@ -1,32 +1,40 @@
-{% load static %}
+{% load bootstrap4%}
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-        <ul class="navbar-nav mr-auto"></ul>
-    </div>
-    <div class="mx-auto order-0">
-        <a class="navbar-brand" href="{% url 'homePage' %}">My-Insta</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a href="/logout" class="nav-link">Logout</a>
-            </li>
-            <li class="nav-item">
-                <a href="/user" class="btn btn-outline-primary">{{user.username|title}}</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a href="/login" class="nav-link">Login</a>
-            </li>
-            <li class="nav-item">
-                <a href="/register" class="btn btn-outline-primary">Register</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
+
+<div class="container-fluid">
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'homePage' %}">My-Insta</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form class="mb-0 h1 ml-auto mr-auto" id="searchform" action="{% url 'search' %}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search users" name="search_user">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user" class="btn btn-outline-primary">{{user.username|title}}</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="/login" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/register" class="btn btn-outline-primary">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>

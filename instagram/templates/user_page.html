@@ -37,7 +37,52 @@
             <div class="row">
                 <div class="col-6 my-auto">
                     <h2 class="font-weight-bold pt-4 text-center">Posts</h2>
+                    <div class="col-md">
+                      {% if posts %}
+                      {% for image in posts %}
+                      <div class="profile">
+                          <div class="row">
+                              <div class="col-md-2">
+                                  {% if image.user.profile.photo.url %}
+                                  <p><a href="{% url 'users_profile' image.user.id %}"><img class="profile_photo"
+                                              src="{{ image.user.profile.photo.url }}" alt="{{ photo.profile.name }}"></p>
+                                  {% else %}
+                                  <i style="font-size:100px;color:#1d1c1c" class="fa fa-user" aria-hidden="true"></i>
+                                  {% endif %}
+                              </div>
+                          
+                          </div>
+                          </a>
+                      </div>
+      
+                      <div class="card-body">
+                          <div>
+                              <a href=" {% url 'likes' image_id=image.id %}">
+                                  <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
+                              <p><strong class="ml-3 photo_likes">{{image.all_likes}} </strong>
+                                  <strong>Likes</strong>
+                              </p>
+                          </div>
+                          <div>
+                              <p class=""><strong>{{image.name}}</strong> {{photo.caption}}</p>
+                          </div>
+                          {% for comment in image.all_comments %}
+                          <p class="ml-3"><span class="font-weight-bold text-success">{{comment.user.username}}</span>:
+                              {{comment.comment}}</p>
+                          {% endfor %}
+                          <form action="{% url 'commenting' image_id=image.id %}" method="post">
+                              {% csrf_token %}
+                              {% bootstrap_form comment_form %}
+                              <input type="submit" class="btn btn-success btn-lg" style="margin-bottom: 10px;"
+                                  value="Comment">
+                          </form>
+                      </div>
+                      {% endfor %}
+      
+                      {% endif %}
+                  </div>
                 </div>
+               
                 <div class="col-6 my-auto text-right">
                     <button type="button" class="btn btn-primary font-weight-bold text-center" style="border-radius: 10%" data-toggle="modal" data-target="#postModal">+ Bio</button>
                 </div>

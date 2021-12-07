@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from .models import *
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -39,7 +39,10 @@ def posting(request):
             post = post_form.save(commit=False)
             post.user = request.user
             post.save()
-    return redirect('homePage')
+            return redirect('homePage')
+    else:
+        post_form = PostForm()
+    return render(request,'post.html',{"post_form":post_form})
 
 
 def user_register(request):
@@ -81,19 +84,13 @@ def all_comments(request, image_id):
 
 
 @login_required
-def likes(request,image_id):
-    if request.method == 'GET':
-        image = Image.objects.get(pk=image_id)
-        user = request.user
-        check_user = Likes.objects.filter(user=user,image=image).first()
-        if check_user == None:
-            image = Image.objects.get(pk=image_id)
-            like = Likes(like=True,image=image,user=user)
-            like.save()
-            return JsonResponse({'success': True,'image':image_id,'status':True})
-        else:
-            check_user.delete()
-            return JsonResponse({'success':True,'image':image_id,'status':False})
+def likes(request, image_id):
+    current_user = request.user
+    image=Image.objects.get(id=image_id)
+    new_like,created= Likes.objects.get_or_create(liker=current_user, image=image)
+    new_like.save()
+
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 
@@ -136,19 +133,21 @@ def user_page(request):
             messages.error(request,('Unable to complete request'))
         return redirect ("userpage")
     user = request.user
+    comment_form = CommentForm()
     posts = Image.objects.filter(user_id=user.id).all()
     user_form = UserForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form})
+    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form,'comment_form':comment_form})
 
 
 @login_required
 def users_profile(request, pk):
-  user = User.objects.get(pk=pk)
-  images = Image.objects.filter(user=user)
-  c_user = request.user
+    comment_form = CommentForm()
+    user = User.objects.get(pk=pk)
+    images = Image.objects.filter(user=user)
+    c_user = request.user
 
-  return render(request, 'users_profile.html', {"user": user, "images": images, "c_user": c_user})
+    return render(request, 'users_profile.html', {"user": user, "images": images, "c_user": c_user,'comment_form':comment_form})
 
 
 @login_required

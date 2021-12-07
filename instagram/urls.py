@@ -13,8 +13,10 @@ urlpatterns=[
     path("user", views.user_page, name = "userpage"),
     re_path(r'^comment/(?P<image_id>\d+)$',app_views.commenting,name='commenting'),
     re_path(r'^allcomments/(?P<image_id>\d+)$',app_views.all_comments,name='all_comments'),
+    re_path(r'^likes/(?P<image_id>\d+)', app_views.likes, name='likes'),
     re_path(r'^userpost/(?P<pk>\d+)$',app_views.user_page, name='userpage'),
     re_path(r'^userprofile/(?P<pk>\d+)$',app_views.users_profile, name='users_profile'),
+    re_path(r'^search/$',app_views.search,name='search'),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

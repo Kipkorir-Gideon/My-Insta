@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load bootstrap4%}
+
 {% block content %}
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 
@@ -8,8 +10,6 @@
         <div class="col-sm-4">
             <img src="{{user.profile.photo.url}}" alt="{{user.photo.url}}" width="200" height="200"
                 class="rounded-circle account-img">
-        </div>
-        <div class="col-sm-8">
             <section>
                 <div class="row1">
                     <h3 class="text-monospace">{{user.username}}</h3>
@@ -20,11 +20,10 @@
                     <p class="text-monospace ml-3">{{user.profile.all_followers}} followers</p>
                     <p class="text-monospace ml-3">{{user.profile.all_following}} following</p>
                 </div>
-                <div class="row3 mt-3">
-                    <p class="text-monospace font-weight-bold">{{user.username}}</p>
-                    <p class="text-monospace">{{user.profile.bio}}</p>
-                </div>
             </section>
+        </div>
+        <div class="col-sm-8">
+            
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -42,7 +41,50 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md">
+                {% if images %}
+                {% for image in images %}
+                <div class="profile">
+                    <div class="row">
+                        <div class="col-md-2">
+                            {% if image.user.profile.photo.url %}
+                            <p><a href="{% url 'users_profile' image.user.id %}"><img class="profile_photo"
+                                        src="{{ image.user.profile.photo.url }}" alt="{{ photo.profile.name }}"></p>
+                            {% else %}
+                            <i style="font-size:100px;color:#1d1c1c" class="fa fa-user" aria-hidden="true"></i>
+                            {% endif %}
+                        </div>
+                    
+                    </div>
+                    </a>
+                </div>
 
+                <div class="card-body">
+                    <div>
+                        <a href=" {% url 'likes' image_id=image.id %}">
+                            <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
+                        <p><strong class="ml-3 photo_likes">{{image.all_likes}} </strong>
+                            <strong>Likes</strong>
+                        </p>
+                    </div>
+                    <div>
+                        <p class=""><strong>{{image.name}}</strong> {{photo.caption}}</p>
+                    </div>
+                    {% for comment in image.all_comments %}
+                    <p class="ml-3"><span class="font-weight-bold text-success">{{comment.user.username}}</span>:
+                        {{comment.comment}}</p>
+                    {% endfor %}
+                    <form action="{% url 'commenting' image_id=image.id %}" method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form comment_form %}
+                        <input type="submit" class="btn btn-success btn-lg" style="margin-bottom: 10px;"
+                            value="Comment">
+                    </form>
+                </div>
+                {% endfor %}
+
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

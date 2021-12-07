@@ -55,10 +55,12 @@
                 </div>
 
                 <div>
-                    <p><strong class="ml-3 image_likes">{{post.all_likes}} </strong>
-                        <strong>Likes</strong> </p>
-
-                </div>
+                    <a href=" {% url 'likes' image_id=post.id %}">
+                      <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
+                    <p><strong class="ml-3 photo_likes">{{post.all_likes}} </strong>
+                      <strong>Likes</strong>
+                    </p>
+                  </div>
 
                 <div>
                     <p class="text-muted text-monospace ml-3"><strong>{{post.name}}</strong> {{post.caption}}
