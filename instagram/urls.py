@@ -3,12 +3,13 @@ from django.conf.urls.static import static
 from django.urls import path,re_path
 from . import views as app_views
 from . import views
+from django.conf.urls import include
 
 
 urlpatterns=[
     path('',views.homepage, name='homePage'),
-    path('register/', views.user_register, name='register'),
-    path("login/", views.user_login, name="login"),
+    path('accounts/register/', views.user_register, name='register'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path("logout/", views.user_logout, name= "logout"),
     path("user", views.user_page, name = "userpage"),
     re_path(r'^comment/(?P<image_id>\d+)$',app_views.commenting,name='commenting'),
