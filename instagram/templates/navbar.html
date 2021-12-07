@@ -1,40 +1,58 @@
-{% load bootstrap4%}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-<div class="container-fluid">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'homePage' %}">My-Insta</a>
+    </div>
+    <!-- Adding a search form  -->
+    <div class="col-sm-4 col-md-4 navbar-right">
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'homePage' %}">My-Insta</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form class="mb-0 h1 ml-auto mr-auto" id="searchform" action="{% url 'search' %}">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search users" name="search_user">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a href="/logout" class="nav-link">Logout</a>
-                </li>
-                <li class="nav-item">
+        <form class="mb-0 h1 ml-auto mr-auto" id="searchform" action="{% url 'search' %}">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search users" name="search_user">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- search form end -->
+    <div>
+            {% if user.is_authenticated %}
+            <ul>
+              <li class="dropdown" style="list-style:none;">
+                <a href="#" class="dropdown-toggle btn btn-dark" data-toggle="dropdown" role="button" aria-expanded="false">Account
+                          <span class="caret"></span>
+                      </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>
                     <a href="/user" class="btn btn-outline-primary">{{user.username|title}}</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a href="/accounts/login" class="nav-link">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/accounts/register" class="btn btn-outline-primary">Register</a>
-                </li>
-                {% endif %}
+                  </li>
+                  <li>
+                    <a href="/logout" class="nav-link">Logout</a>
+                  </li>
+                </ul>
+              </li>
             </ul>
-        </div>
-    </nav>
-</div>
+            {% else %}
+            <li style="list-style:none;">
+              <a class='btn btn-dark' href="/accounts/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="/accounts/register" class="btn btn-outline-primary">Register</a>
+            </li>
+
+            {% endif %}
+          </div>  
+  </div>
+</nav>
+</body>
+</html>

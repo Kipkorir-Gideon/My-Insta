@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -44,21 +43,6 @@ def posting(request):
     return render(request,'post.html',{"post_form":post_form})
 
 
-# def user_register(request):
-#     if request.method == 'POST':
-#         form = NewUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password1')
-#             user = authenticate(username=username, password=password)
-#             login(request, user)
-#             messages.success(request,'Registration successful.')
-#             return redirect("login")  
-#         messages.error(request,'Registration failed.')
-#     form = NewUserForm()
-#     return render(request, "registration/registration.html", {'register_form': form})
-
 
 
 @login_required
@@ -70,7 +54,7 @@ def commenting(request, image_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.user = request.user
-            comment.image = image 
+            comment.photo = image 
             comment.save()
     return redirect("homePage")  
 
@@ -84,12 +68,16 @@ def all_comments(request, image_id):
 
 @login_required
 def likes(request, image_id):
-    current_user = request.user
-    image=Image.objects.get(id=image_id)
-    new_like,created= Likes.objects.get_or_create(liker=current_user, image=image)
-    new_like.save()
-
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    image = get_object_or_404(Image,id = image_id)
+    like = Likes.objects.filter(image = image ,liker = request.user).first()
+    if like is None:
+        like = Likes()
+        like.image = image
+        like.liker = request.user
+        like.save()
+    else:
+        like.delete()
+    return redirect('homePage')
 
 
 

@@ -23,24 +23,6 @@
             </section>
         </div>
         <div class="col-sm-8">
-            
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="modal-body">
-                                <p class="text-monospace">
-                                    <a href="{% url 'logout' %}" class="tooltip-test" title="Tooltip">Logout</a>
-                                </p>
-                                <a class="modaloption button" data-dismiss="modal">
-                                    Cancel
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md">
                 {% if images %}
                 {% for image in images %}
@@ -54,7 +36,7 @@
                             <i style="font-size:100px;color:#1d1c1c" class="fa fa-user" aria-hidden="true"></i>
                             {% endif %}
                         </div>
-                    
+
                     </div>
                     </a>
                 </div>

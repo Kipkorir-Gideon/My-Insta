@@ -47,21 +47,14 @@
                 <img src="{{post.image.url }}" alt="" class="card-img">
             </div>
             <div class="card-body">
-                <div class="flex">
-
-                    <div class="ml-3">
-                        <i class="fas fa-heart like_u">
-                            <input type="hidden" class="post_id" value="{{image.pk}}">
-                        </i>
-                    </div>
-                </div>
-
                 <div>
                     <a href=" {% url 'likes' image_id=post.id %}">
-                        <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i></a>
+                        <i class="fa fa-heart-o fa-3x text-success" aria-hidden="true"></i>
+                    
                     <p><strong class="ml-3 photo_likes">{{post.all_likes}} </strong>
                         <strong>Likes</strong>
                     </p>
+                    </a>
                 </div>
 
                 <div>

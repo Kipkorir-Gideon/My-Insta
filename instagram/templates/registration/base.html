@@ -6,6 +6,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="https://res.cloudinary.com/dbos9xidr/image/upload/v1625817525/parrot-PROFILE_oldbvn.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
   {%if title%}
@@ -27,9 +29,12 @@
 
 
   {% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    {% bootstrap_javascript %}
-  {% endblock %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  {% bootstrap_javascript %}
+  <script src="../static/js/script.js"></script>
+  {% endblock scripts %}
 
 </body>
 
