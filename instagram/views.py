@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required(login_url='/accounts/login/')
