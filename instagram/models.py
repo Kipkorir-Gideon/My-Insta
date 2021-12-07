@@ -39,7 +39,7 @@ class Profile(models.Model):
         return profiles
 
     def __str__(self):
-        return self.bio
+        return "%s profile" % self.user
 
 
 
@@ -75,7 +75,7 @@ class Image(models.Model):
         return self.imagelikes.count()
 
     def __str__(self):
-        return self.name
+        return "%s image" % self.name
 
 
 
@@ -90,7 +90,7 @@ class Comments(models.Model):
         return comments
 
     def __str__(self):
-        return self.comment
+        return "%s comment" % self.photo
 
 
 
@@ -100,7 +100,7 @@ class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userlikes')
 
     def __str__(self):
-        return self.user
+        return "%s like" % self.image
 
 
 
@@ -109,4 +109,4 @@ class Follows(models.Model):
     followee = models.ForeignKey(Profile, related_name='followers', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.follower
+        return "%s follower" % self.follower
