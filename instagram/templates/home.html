@@ -7,18 +7,71 @@
     <hr>
     <br>
     <div class="row">
+        {% if posts %}
          {% for post in posts.all %}          
             <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
                 <div class="card h-100" style="border:none">
+                    <p class="text-monospace ml-3 pt-2"><small><strong>{{post.user.username}}</strong></small></p>
                     <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.name }}" style="width: auto; height: 200px; object-fit: scale-down;">
                     <div class="card-body">
                         <h5 class="card-title">{{ post.name }}</h5>
-                        <p class="card-text text-muted" style="font-size:12px">{{ post.likes }}</p>
+                        <p class="card-text text-muted" style="font-size:12px">{{ post.all_likes }}</p>
                         <p class="card-text">{{ post.caption }}</p>
                     </div>
                 </div> 
             </div>
+
+            <!-- displaying images posted -->
+            <div class="card-header" text-align="center">
+                <img src="{{post.image.url }}" alt="" class="card-img">
+            </div>
+            <div class="card-body">
+                <div class="flex">
+
+                    <div class="ml-3">
+                        <i class="fas fa-heart like_u">
+                            <input type="hidden" class="post_id" value="{{image.pk}}">
+                        </i>
+                    </div>
+                </div>
+
+                <div>
+                    <p><strong class="ml-3 image_likes">{{post.all_likes}} </strong>
+                        <strong>Likes</strong> </p>
+
+                </div>
+
+                <div>
+                    <p class="text-muted text-monospace ml-3"><strong>{{post.name}}</strong> {{post.caption}}
+                    </p>
+                </div>
+
+                <!-- Form for adding comments -->
+                <form action="{% url 'commenting' image_id=post.id %}" method="post">
+                    <i class="far fa-comment"></i>
+                    {% csrf_token %}
+                    {% bootstrap_form comment_form %}
+                    <br>
+                    <input type="submit" class="btn btn-success btn btn-lg" value="Comment">
+                </form>
+
+                 <!-- Displaying comments already posted -->
+                 {% if post.all_comments.count > 2 %}
+                 <div class="ml-1 ">
+                     <a href="{% url 'allcomments' image_id=post.id %}" class="text-muted">View all
+                         {{post.all_comments|length}} comments</a>
+                     
+                 </div>
+                 {% endif %}
+
+                 <!-- Displaying the previous comments -->
+                 {% for comment in post.all_comments|slice:"2" %}
+                 <p class="ml-3"><span class="font-weight-bold">{{comment.user.username}}</span>
+                     {{comment.comment}}</p>
+                 {% endfor %}
+            </div>
         {% endfor %}
+        {%endif %}
     </div>
 </div>
 {% endblock %}

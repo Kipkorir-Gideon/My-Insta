@@ -72,7 +72,7 @@ class Image(models.Model):
 
     @property
     def all_likes(self):
-        return self.likes.count()
+        return self.imagelikes.count()
 
     def __str__(self):
         return self.name

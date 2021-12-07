@@ -63,7 +63,7 @@ def commenting(request, image_id):
     image = Image.objects.filter(pk=image_id).first()
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
-        if not comment_form.is_valid():
+        if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.user = request.user
             comment.image = image 
@@ -75,6 +75,23 @@ def commenting(request, image_id):
 def all_comments(request, image_id):
     image = Image.objects.filter(pk=image_id).first()
     return render(request,'comments.html',{'image':image})
+
+
+
+@login_required
+def likes(request,image_id):
+    if request.method == 'GET':
+        image = Image.objects.get(pk=image_id)
+        user = request.user
+        check_user = Likes.objects.filter(user=user,image=image).first()
+        if check_user == None:
+            image = Image.objects.get(pk=image_id)
+            like = Likes(like=True,image=image,user=user)
+            like.save()
+            return JsonResponse({'success': True,'image':image_id,'status':True})
+        else:
+            check_user.delete()
+            return JsonResponse({'success':True,'image':image_id,'status':False})
 
 
 
