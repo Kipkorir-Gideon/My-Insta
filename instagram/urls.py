@@ -17,6 +17,7 @@ urlpatterns=[
     re_path(r'^userpost/(?P<pk>\d+)$',app_views.user_page, name='userpage'),
     re_path(r'^userprofile/(?P<pk>\d+)$',app_views.users_profile, name='users_profile'),
     re_path(r'^search/$',app_views.search,name='search'),
+    path('post/',app_views.posting,name='post'),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
