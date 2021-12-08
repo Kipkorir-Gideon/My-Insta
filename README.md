@@ -60,7 +60,7 @@ Contact me through:
 
 ## Live site
 
-View live site [here]
+View live site [here](https://gidzinsta.herokuapp.com/)
 
 ## License & copyright
 Licensed under the [MIT License](LICENSE).<br />

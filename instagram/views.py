@@ -7,21 +7,21 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 
 # Create your views here.
+
+
 @login_required(login_url='/accounts/login/')
 def homepage(request):
     if request.method == 'POST':
         post_form = PostForm(request.POST, instance=request.user)
         comment_form = CommentForm(request.POST, instance=request.user)
         if post_form.is_valid():
-            post_form.save()
-            messages.success(request,('Your post has been added successfully.'))
+            post = post_form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, ('Your post has been added successfully.'))
         if comment_form.is_valid():
             comment_form.save()
-            messages.success(request,('Comment added successfully.'))
-        post_id = request.POST.get('post_id')
-        post = Image.objects.get(id=post_id)
-        request.user.profile.posts.add(post)
-        messages.success(request,(f'{post} added to your posts.'))
+            messages.success(request, ('Comment added successfully.'))
         return redirect('homePage')
     posts = Image.objects.all()
     post_form = PostForm(instance=request.user)
@@ -32,7 +32,7 @@ def homepage(request):
 @login_required
 def posting(request):
     if request.method == 'POST':
-        post_form = PostForm(request.POST,request.FILES)
+        post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             post = post_form.save(commit=False)
             post.user = request.user
@@ -40,9 +40,7 @@ def posting(request):
             return redirect('homePage')
     else:
         post_form = PostForm()
-    return render(request,'post.html',{"post_form":post_form})
-
-
+    return render(request, 'post.html', {"post_form": post_form})
 
 
 @login_required
@@ -54,22 +52,21 @@ def commenting(request, image_id):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.user = request.user
-            comment.photo = image 
+            comment.photo = image
             comment.save()
-    return redirect("homePage")  
+    return redirect("homePage")
 
 
 @login_required
 def all_comments(request, image_id):
     image = Image.objects.filter(pk=image_id).first()
-    return render(request,'comments.html',{'image':image})
-
+    return render(request, 'comments.html', {'image': image})
 
 
 @login_required
 def likes(request, image_id):
-    image = get_object_or_404(Image,id = image_id)
-    like = Likes.objects.filter(image = image ,liker = request.user).first()
+    image = get_object_or_404(Image, id=image_id)
+    like = Likes.objects.filter(image=image, liker=request.user).first()
     if like is None:
         like = Likes()
         like.image = image
@@ -80,27 +77,27 @@ def likes(request, image_id):
     return redirect('homePage')
 
 
-
-
 def user_page(request):
     if request.method == "POST":
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
         if user_form.is_valid():
             user_form.save()
-            messages.success(request,('Your profile was successfully updated!'))
+            messages.success(
+                request, ('Your profile was successfully updated!'))
         elif profile_form.is_valid():
             profile_form.save()
-            messages.success(request,('Your wishlist was successfully updated!'))
+            messages.success(
+                request, ('Your wishlist was successfully updated!'))
         else:
-            messages.error(request,('Unable to complete request'))
-        return redirect ("userpage")
+            messages.error(request, ('Unable to complete request'))
+        return redirect("userpage")
     user = request.user
     comment_form = CommentForm()
     posts = Image.objects.filter(user_id=user.id).all()
     user_form = UserForm(instance=request.user)
     profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'user_page.html', {'user':request.user, 'posts': posts, 'user_form':user_form, 'profile_form':profile_form,'comment_form':comment_form})
+    return render(request, 'user_page.html', {'user': request.user, 'posts': posts, 'user_form': user_form, 'profile_form': profile_form, 'comment_form': comment_form})
 
 
 @login_required
@@ -110,16 +107,16 @@ def users_profile(request, pk):
     images = Image.objects.filter(user=user)
     c_user = request.user
 
-    return render(request, 'users_profile.html', {"user": user, "images": images, "c_user": c_user,'comment_form':comment_form})
+    return render(request, 'users_profile.html', {"user": user, "images": images, "c_user": c_user, 'comment_form': comment_form})
 
 
 @login_required
 def search(request):
-  if 'search_user' in request.GET and request.GET["search_user"]:
-    name = request.GET.get('search_user')
-    the_users = Profile.search_profiles(name)
-    images = Image.search_images(name)
-    print(the_users)
-    return render(request, 'search.html', {"users": the_users, "images": images})
-  else:
-    return render(request, 'search.html')
+    if 'search_user' in request.GET and request.GET["search_user"]:
+        name = request.GET.get('search_user')
+        the_users = Profile.search_profiles(name)
+        images = Image.search_images(name)
+        print(the_users)
+        return render(request, 'search.html', {"users": the_users, "images": images})
+    else:
+        return render(request, 'search.html')
